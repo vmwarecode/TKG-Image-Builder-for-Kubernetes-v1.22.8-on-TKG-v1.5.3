@@ -1,13 +1,15 @@
 package:
+  amazon-ssm-agent:
+    installed: true
   audit:
+    installed: true
+  awscli:
     installed: true
   ca-certificates:
     installed: true
   chrony:
     installed: true
   cloud-init:
-    installed: true
-  cloud-utils-growpart:
     installed: true
   conntrack-tools:
     installed: true
@@ -17,23 +19,24 @@ package:
     installed: true
   jq:
     installed: true
-  libseccomp:
-    installed: true
   ntp:
     installed: false
   open-vm-tools:
     installed: true
+  postfix:
+    installed: false
   python-netifaces:
     installed: true
   python-requests:
-    installed: true
-  python2-pip:
     installed: true
   socat:
     installed: true
   yum-utils:
     installed: true
 service:
+  amazon-ssm-agent:
+    enabled: true
+    running: true
   auditd:
     enabled: true
     running: true
@@ -52,11 +55,14 @@ service:
   kubelet:
     enabled: true
     running: false
+  sysstat:
+    enabled: true
+    running: true
 command:
   /opt/cni/bin/host-device 2>&1 | awk -F' ' '{print substr($4,2); }':
     exit-status: 0
     stdout:
-    - 0.8.7+vmware.18
+    - 1.1.0+vmware.1
     stderr: []
     timeout: 0
   containerd --version | awk -F' ' '{print substr($3,2); }':
@@ -108,19 +114,9 @@ kernel-param:
     value: "1"
   net.ipv4.ip_forward:
     value: "1"
-  net.ipv4.neigh.default.gc_thresh1:
-    value: "4096"
-  net.ipv4.neigh.default.gc_thresh2:
-    value: "8192"
-  net.ipv4.neigh.default.gc_thresh3:
-    value: "16384"
+  net.ipv4.tcp_congestion_control:
+    value: bbr
   net.ipv6.conf.all.disable_ipv6:
     value: "0"
   net.ipv6.conf.all.forwarding:
     value: "1"
-  net.ipv6.neigh.default.gc_thresh1:
-    value: "4096"
-  net.ipv6.neigh.default.gc_thresh2:
-    value: "8192"
-  net.ipv6.neigh.default.gc_thresh3:
-    value: "16384"
